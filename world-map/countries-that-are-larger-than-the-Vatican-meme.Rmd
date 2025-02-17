@@ -67,7 +67,7 @@ unique(world_map_3$region)
 
 ```
 
-# plots
+# plot
 
 ```{r pressure, echo=FALSE}
 
