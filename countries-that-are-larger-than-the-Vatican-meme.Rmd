@@ -65,7 +65,6 @@ world_map_3 <- na.omit(world_map_3)
 
 unique(world_map_3$region)
 
-
 ```
 
 # plots
