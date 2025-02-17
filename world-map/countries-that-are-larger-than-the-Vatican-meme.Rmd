@@ -28,7 +28,7 @@ unique(world_map_2$region)
 
 ```
 
-# adjust world_area_2 data frame
+# adjust world_area data frame
 
 ```{r}
 
