@@ -1,0 +1,82 @@
+---
+title: "countries_that_are_larger_than_Vatican_meme"
+author: "Xuan Tung Hoang"
+date: "2025-02-17"
+output: html_document
+---
+
+# calling library
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+```
+
+# adjust world_map data frame
+
+```{r}
+
+world_map <- map_data("world")
+
+world_map_2 <- world_map |> 
+  select(long, lat, group, order, region)
+
+unique(world_map$region)
+
+```
+# adjust world_area_2 data frame
+
+```{r}
+
+# data source: https://data.worldbank.org/indicator/AG.LND.TOTL.K2?most_recent_value_desc=false&view=map
+
+# need to edit the region names for consistency with world_map_2 data frame 
+
+world_area <- read_csv("~/programming/03. Advanced Data Visualization in R with ggplot2/world_area.csv")
+
+world_area_2 <- world_area |>
+  select(`Country Name`, `2022`) |> 
+  rename(`region` = `Country Name`, `area` = `2022`)
+
+unique(world_area_2$region)
+
+```
+
+# merge two data frame by inner_join and adjust the final one
+
+```{r}
+
+world_map_3 <- world_map_2 |> inner_join(world_area_2, by = join_by(region))
+
+vatican_area <- unique(world_map_3$area[world_map_3$region == "Vatican"])
+world_map_3$larger <- ifelse(world_map_3$area > vatican_area, "Bigger than Vatican", "No Data")
+
+world_map_3$larger[world_map_3$region == "Greenland"] <- "No Data"
+
+# world_map_3$area[world_map_3$area == "NA"] <- "No Data"
+
+# check row have NA values: subset(world_map_3, is.na(area)) 
+
+world_map_3 <- na.omit(world_map_3)
+
+```
+
+# plots
+
+```{r pressure, echo=FALSE}
+
+meme <- ggplot(data = world_map_3, mapping = aes(x = long, y = lat, group = group)) +
+  geom_polygon(mapping = aes(fill = larger), color = "black") +
+  scale_fill_manual(values = c("darkolivegreen4", "azure3")) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        panel.background = element_blank(),
+        legend.title= element_blank(),
+        legend.position = c(0.16, 0.25)
+  )
+
+```
