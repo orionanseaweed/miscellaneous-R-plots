@@ -1,5 +1,5 @@
 ---
-title: "countries_that_are_larger_than_Vatican_meme"
+title: "countries-that-are-larger-than-the-Vatican-meme"
 author: "Xuan Tung Hoang"
 date: "2025-02-17"
 output: html_document
@@ -8,8 +8,11 @@ output: html_document
 # calling library
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(maps)
 library(readr)
+
 ```
 
 # adjust world_map data frame
@@ -21,9 +24,10 @@ world_map <- map_data("world")
 world_map_2 <- world_map |> 
   select(long, lat, group, order, region)
 
-unique(world_map$region)
+unique(world_map_2$region)
 
 ```
+
 # adjust world_area_2 data frame
 
 ```{r}
@@ -59,13 +63,16 @@ world_map_3$larger[world_map_3$region == "Greenland"] <- "No Data"
 
 world_map_3 <- na.omit(world_map_3)
 
+unique(world_map_3$region)
+
+
 ```
 
 # plots
 
 ```{r pressure, echo=FALSE}
 
-meme <- ggplot(data = world_map_3, mapping = aes(x = long, y = lat, group = group)) +
+meme <- ggplot(data = world_map_3, mapping = aes(x = long, y = lat, group = group))+
   geom_polygon(mapping = aes(fill = larger), color = "black") +
   scale_fill_manual(values = c("darkolivegreen4", "azure3")) +
   theme(axis.title.x=element_blank(),
