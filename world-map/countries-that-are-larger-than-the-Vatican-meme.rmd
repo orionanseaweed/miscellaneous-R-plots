@@ -32,7 +32,8 @@ unique(world_map_2$region)
 
 ```{r}
 
-# data source: https://data.worldbank.org/indicator/AG.LND.TOTL.K2?most_recent_value_desc=false&view=map
+# original data source: https://data.worldbank.org/indicator/AG.LND.TOTL.K2?most_recent_value_desc=false&view=map
+# note that this data frame was transformed and added some values to fit with the world_map data frame.
 
 # need to edit the region names for consistency with world_map_2 data frame 
 
